@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-qapp-dark antialiased;
+  }
+}
+
+@layer components {
+  .container-qapp {
+    @apply mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-10;
+  }
+
+  .hero-glow {
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37, 99, 235, 0.08), transparent);
+  }
+
+  .text-gradient-blue {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-qapp-blue to-blue-400;
+  }
+}
+
+@layer utilities {
+  .animate-number-pop {
+    animation: number-pop 0.45s ease-out;
+  }
+
+  .animate-shimmer-border {
+    background: linear-gradient(90deg, #fff 0%, #eff6ff 50%, #fff 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2.5s linear infinite;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover;
+  }
+}
