@@ -16,8 +16,8 @@ export default function VideoTipsSection() {
   const { t } = useLanguage()
 
   return (
-    <section id="videos" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="videos">
+      <div className="w-full">
         <SectionHeader title={t('videos.title')} subtitle={t('videos.subtitle')} />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

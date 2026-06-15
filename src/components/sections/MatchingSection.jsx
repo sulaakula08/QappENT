@@ -23,8 +23,8 @@ export default function MatchingSection({ selectedProfession, currentScore }) {
   }).filter(Boolean)
 
   return (
-    <section id="matching" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="matching">
+      <div className="w-full">
         <FadeIn>
           <SectionHeader title={t('matching.title')} subtitle={t('matching.subtitle')} />
         </FadeIn>

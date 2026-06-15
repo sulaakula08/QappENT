@@ -20,8 +20,8 @@ export default function LeaderboardSection() {
   ]
 
   return (
-    <section id="leaderboard" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="leaderboard">
+      <div className="w-full">
         <SectionHeader title={t('leaderboard.title')} subtitle={t('leaderboard.subtitle')} />
         <p className="text-xs text-qapp-gray mb-4 italic">{t('common.mockDisclaimer')}</p>
 

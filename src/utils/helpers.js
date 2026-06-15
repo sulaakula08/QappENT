@@ -165,11 +165,13 @@ export function getAIInsight(currentScore, universityId, programId, subjects, t)
       ? t('ai.abovePaid', { paid: program.avgPaidScore, grant: program.avgGrantScore, gap: grantGap, focus })
       : t('ai.needPaid', { gap: program.minPaidScore - score, focus }),
     plan7Days: [
-      `${t('ai.day')} 1–2: ${weakestName} — ${focus}`,
-      `${t('ai.day')} 3: Timed practice (40 min)`,
-      `${t('ai.day')} 4–5: High-frequency topics`,
-      `${t('ai.day')} 6: Full mock test`,
-      `${t('ai.day')} 7: Review mistakes`,
+      `${t('ai.day')} 1: ${weakestName} — theory 45 min + 15 timed MCQ (25 min)`,
+      `${t('ai.day')} 2: ${weakestName} — ${focus}, error log 30 min`,
+      `${t('ai.day')} 3: Mixed practice — 40 MCQ profile subjects, 50 min`,
+      `${t('ai.day')} 4: Reading literacy — 2 passages timed + analysis`,
+      `${t('ai.day')} 5: Math literacy + high-frequency ENT topics, 2.5h`,
+      `${t('ai.day')} 6: Partial mock (profile + history), 3h`,
+      `${t('ai.day')} 7: Review all mistakes, light recap — 1.5h`,
     ],
   }
 }

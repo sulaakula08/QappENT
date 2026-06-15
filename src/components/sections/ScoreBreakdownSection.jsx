@@ -25,8 +25,8 @@ export default function ScoreBreakdownSection({ subjects, onSubjectChange }) {
   [subjects])
 
   return (
-    <section id="breakdown" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="breakdown">
+      <div className="w-full">
         <SectionHeader title={t('breakdown.title')} subtitle={t('breakdown.subtitle')} />
 
         <p className="text-sm text-qapp-gray mb-4">{t('common.enterScoreHint')}</p>

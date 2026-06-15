@@ -11,8 +11,8 @@ export default function Plan21Section() {
   const [generated, setGenerated] = useState(false)
 
   return (
-    <section id="plan-21" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="plan-21">
+      <div className="w-full">
         <SectionHeader title={t('plan21.title')} subtitle={t('plan21.subtitle')} />
 
         <div className="flex gap-3 mb-10 items-center">

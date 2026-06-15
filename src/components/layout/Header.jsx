@@ -2,6 +2,7 @@ import { Globe } from 'lucide-react'
 import Button from '../ui/Button'
 import Logo from '../ui/Logo'
 import { useLanguage } from '../../context/LanguageContext'
+import { useENTTab } from '../../context/ENTTabContext'
 import { useScrollHeader } from '../../hooks/useScrollHeader'
 
 const LANGS = [
@@ -13,12 +14,13 @@ const LANGS = [
 export default function Header() {
   const { lang, setLang, t } = useLanguage()
   const { visible, scrolled } = useScrollHeader()
+  const { setActiveTab } = useENTTab()
 
   const NAV_LINKS = [
-    { label: t('nav.universities'), href: '#universities' },
-    { label: t('nav.colleges'), href: '#' },
-    { label: t('nav.about'), href: '#' },
-    { label: t('nav.blog'), href: '#' },
+    { label: t('nav.universities'), tab: 'universities' },
+    { label: t('nav.colleges'), tab: null },
+    { label: t('nav.about'), tab: null },
+    { label: t('nav.blog'), tab: null },
   ]
 
   return (
@@ -44,15 +46,16 @@ export default function Header() {
             </a>
 
             <nav className="hidden lg:flex items-center gap-7 xl:gap-9">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href + link.label}
-                  href={link.href}
-                  className="text-[15px] text-qapp-dark hover:text-qapp-blue transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-qapp-blue hover:after:w-full after:transition-all after:duration-300"
-                >
-                  {link.label}
-                </a>
-              ))}
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.label}
+                type="button"
+                onClick={() => link.tab && setActiveTab(link.tab)}
+                className="text-[15px] text-qapp-dark hover:text-qapp-blue transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-qapp-blue hover:after:w-full after:transition-all after:duration-300"
+              >
+                {link.label}
+              </button>
+            ))}
             </nav>
 
             <div className="flex items-center gap-3 sm:gap-4">

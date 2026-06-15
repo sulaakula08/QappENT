@@ -22,8 +22,8 @@ export default function ExamFormatSection() {
   }))
 
   return (
-    <section id="format" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="format">
+      <div className="w-full">
         <SectionHeader title={t('format.title')} subtitle={t('format.subtitle')} />
 
         <div className="grid sm:grid-cols-3 gap-4 mb-8">

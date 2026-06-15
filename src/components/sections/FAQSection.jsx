@@ -10,7 +10,7 @@ import { hasEnteredScore } from '../../utils/helpers'
 
 const CONCERN_IDS = ['time', 'subjects', 'grant', 'hours', 'stuck', 'realistic']
 
-export default function FAQSection({ onScrollTo, currentScore, targetScore }) {
+export default function FAQSection({ onTabChange, currentScore, targetScore }) {
   const { t, lang } = useLanguage()
   const [selected, setSelected] = useState('time')
   const [aiAnswer, setAiAnswer] = useState('')
@@ -43,8 +43,8 @@ export default function FAQSection({ onScrollTo, currentScore, targetScore }) {
   }
 
   return (
-    <section id="faq" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="faq">
+      <div className="w-full">
         <FadeIn>
           <SectionHeader title={t('faq.title')} subtitle={t('faq.subtitle')} />
         </FadeIn>
@@ -108,10 +108,10 @@ export default function FAQSection({ onScrollTo, currentScore, targetScore }) {
                 </Button>
                 <Button size="sm" onClick={() => {
                   const cta = t(`concerns.${selected}.cta`)
-                  if (cta.includes('21') || cta.includes('күндік')) onScrollTo('plan-21')
-                  else if (cta.includes('breakdown') || cta.includes('Breakdown')) onScrollTo('breakdown')
-                  else if (cta.includes('план') || cta.includes('жоспар')) onScrollTo('planner')
-                  else onScrollTo('universities')
+                  if (cta.includes('21') || cta.includes('күндік') || cta.includes('21-day')) onTabChange('practice')
+                  else if (cta.includes('breakdown') || cta.includes('Breakdown')) onTabChange('practice')
+                  else if (cta.includes('план') || cta.includes('жоспар') || cta.includes('plan')) onTabChange('practice')
+                  else onTabChange('universities')
                 }}>
                   {t(`concerns.${selected}.cta`)}
                 </Button>

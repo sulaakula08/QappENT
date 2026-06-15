@@ -17,8 +17,8 @@ export default function UniversitySection({
   const scoreEntered = hasEnteredScore(currentScore)
 
   return (
-    <section id="universities" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="universities">
+      <div className="w-full">
         <SectionHeader title={t('universities.title')} subtitle={t('universities.subtitle')} />
 
         <div className="grid sm:grid-cols-2 gap-4 mb-6 max-w-2xl">

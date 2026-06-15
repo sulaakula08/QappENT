@@ -33,8 +33,8 @@ export default function PaidGrantSection({ currentScore }) {
   )
 
   return (
-    <section id="paid-grant" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="paid-grant">
+      <div className="w-full">
         <SectionHeader title={t('paidGrant.title')} subtitle={t('paidGrant.subtitle')} />
 
         <Card padding="p-0" className="overflow-hidden">

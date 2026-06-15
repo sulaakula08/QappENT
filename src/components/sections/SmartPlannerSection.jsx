@@ -1,11 +1,10 @@
 import { Calendar, Bell, Target, AlertTriangle, BookOpen, CheckCircle2, Circle } from 'lucide-react'
 import SectionHeader from '../ui/SectionHeader'
 import Card from '../ui/Card'
-import Countdown from '../ui/Countdown'
 import Badge from '../ui/Badge'
 import InputField from '../ui/InputField'
 import Select from '../ui/Select'
-import { ENT_DATE, PLANNER_TASKS, PROFILE_COMBOS } from '../../data/mockData'
+import { PLANNER_TASKS, PROFILE_COMBOS } from '../../data/mockData'
 import { getPlannerMessage, getWeakestSubject, detectWeakSubjects, hasEnteredScore } from '../../utils/helpers'
 import { useLanguage } from '../../context/LanguageContext'
 
@@ -27,22 +26,14 @@ export default function SmartPlannerSection({
   ]
 
   return (
-    <section id="planner" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="planner">
+      <div className="w-full">
         <SectionHeader title={t('planner.title')} subtitle={t('planner.subtitle')} />
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           <Card className="lg:col-span-1">
             <h3 className="font-semibold mb-4">{t('planner.settings')}</h3>
             <div className="space-y-4">
-              <div className="flex justify-between py-2 border-b border-gray-50">
-                <span className="text-sm text-qapp-gray">{t('common.current')}</span>
-                <span className="text-sm font-semibold">{scoreEntered ? currentScore : '—'}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-50">
-                <span className="text-sm text-qapp-gray">{t('common.target')}</span>
-                <span className="text-sm font-semibold text-qapp-blue">{targetScore}</span>
-              </div>
               <InputField label={t('planner.hoursDay')} type="number" value={hoursPerDay} onChange={onHoursChange} min={1} max={12} suffix="ч" />
               <Select
                 label={t('planner.profileSubjects')}
@@ -50,7 +41,6 @@ export default function SmartPlannerSection({
                 onChange={onProfileComboChange}
                 options={PROFILE_COMBOS.map((c) => ({ value: c.id, label: t(`profileCombos.${c.id}`) }))}
               />
-              <p className="text-xs text-qapp-gray">{t('planner.examDate')}</p>
             </div>
           </Card>
 
@@ -64,10 +54,9 @@ export default function SmartPlannerSection({
                 <p className="text-sm text-qapp-gray mt-1 leading-relaxed">{planner.message}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 mb-6">
-              <Countdown targetDate={ENT_DATE} compact />
-              {scoreEntered && <Badge variant="blue">{t('planner.weeklyTarget')}: +{planner.perWeek}</Badge>}
-            </div>
+            {scoreEntered && (
+              <Badge variant="blue" className="mb-6">{t('planner.weeklyTarget')}: +{planner.perWeek}</Badge>
+            )}
 
             <div className="grid grid-cols-7 gap-2 mb-6">
               {PLANNER_TASKS.calendar.map((day) => (

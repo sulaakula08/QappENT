@@ -1,4 +1,4 @@
-import { Sparkles, Target, TrendingUp, Lightbulb, RefreshCw, Loader2 } from 'lucide-react'
+import { Sparkles, Target, TrendingUp, Lightbulb, RefreshCw, Loader2, Clock, CalendarDays, AlertCircle } from 'lucide-react'
 import SectionHeader from '../ui/SectionHeader'
 import Card from '../ui/Card'
 import Badge from '../ui/Badge'
@@ -14,6 +14,40 @@ function chanceVariant(chance) {
   if (c.includes('high') || c.includes('высок') || c.includes('жоғар')) return 'green'
   if (c.includes('low') || c.includes('низк') || c.includes('төмен')) return 'amber'
   return 'blue'
+}
+
+function PlanDayCard({ day, theme, hours, tasks, dayLabel }) {
+  return (
+    <div className="p-4 rounded-xl border border-gray-100 bg-white hover:border-qapp-blue/25 hover:shadow-card transition-all duration-300">
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-qapp-blue text-white text-xs font-bold">
+          <CalendarDays className="w-3.5 h-3.5" />
+          {dayLabel} {day.day}
+        </span>
+        {theme && (
+          <span className="text-sm font-semibold text-qapp-dark">{theme}</span>
+        )}
+        {hours && (
+          <span className="inline-flex items-center gap-1 text-xs text-qapp-gray ml-auto">
+            <Clock className="w-3.5 h-3.5" />
+            {hours}h
+          </span>
+        )}
+      </div>
+      {tasks.length > 0 ? (
+        <ul className="space-y-2">
+          {tasks.map((task, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-qapp-gray leading-relaxed">
+              <span className="w-1.5 h-1.5 rounded-full bg-qapp-blue mt-2 shrink-0" />
+              {task}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-sm text-qapp-gray">{day.text || '—'}</p>
+      )}
+    </div>
+  )
 }
 
 export default function AIInsightSection({
@@ -43,8 +77,8 @@ export default function AIInsightSection({
 
   if (fallback.needsScore) {
     return (
-      <section id="ai-insight" className="py-14 sm:py-20 border-t border-gray-100">
-        <div className="container-qapp">
+      <section id="ai-insight">
+        <div className="w-full">
           <FadeIn>
             <SectionHeader title={t('ai.title')} subtitle={t('ai.subtitle')} />
             <Card padding="p-6" className="animate-shimmer-border">
@@ -60,11 +94,14 @@ export default function AIInsightSection({
   const chance = gemini?.chance || fallback.chance
   const focus = gemini?.focus || fallback.weakestArea
   const summary = gemini?.summary || fallback.message
-  const plan = gemini?.plan?.length ? gemini.plan : fallback.plan7Days
+  const gapAnalysis = gemini?.gapAnalysis || ''
+  const realisticNote = gemini?.realisticNote || ''
+  const weeklyPlan = gemini?.weeklyPlan?.length ? gemini.weeklyPlan : null
+  const flatPlan = gemini?.plan?.length ? gemini.plan : fallback.plan7Days
 
   return (
-    <section id="ai-insight" className="py-14 sm:py-20 border-t border-gray-100">
-      <div className="container-qapp">
+    <section id="ai-insight">
+      <div className="w-full">
         <FadeIn>
           <SectionHeader title={t('ai.title')} subtitle={t('ai.subtitle')} />
         </FadeIn>
@@ -95,6 +132,29 @@ export default function AIInsightSection({
               {summary}
             </p>
 
+            {(gapAnalysis || realisticNote) && (
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                {gapAnalysis && (
+                  <div className="p-4 rounded-xl border border-amber-100 bg-amber-50/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Target className="w-4 h-4 text-amber-600" />
+                      <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{t('ai.gapAnalysis')}</p>
+                    </div>
+                    <p className="text-sm text-qapp-gray leading-relaxed">{gapAnalysis}</p>
+                  </div>
+                )}
+                {realisticNote && (
+                  <div className="p-4 rounded-xl border border-blue-100 bg-qapp-blue-light/40">
+                    <div className="flex items-center gap-2 mb-2">
+                      <AlertCircle className="w-4 h-4 text-qapp-blue" />
+                      <p className="text-xs font-semibold uppercase tracking-wide text-qapp-blue">{t('ai.realisticNote')}</p>
+                    </div>
+                    <p className="text-sm text-qapp-gray leading-relaxed">{realisticNote}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {error && (
               <p className="text-xs text-amber-600 mb-4">{t('ai.error')}: {error}</p>
             )}
@@ -121,20 +181,37 @@ export default function AIInsightSection({
               ))}
             </div>
 
-            <h4 className="font-semibold mb-4">{t('ai.plan7')}</h4>
-            <div className="space-y-2 mb-6">
-              {plan.slice(0, 7).map((day, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-3 rounded-xl hover:bg-qapp-blue-light/40 transition-colors duration-200"
-                >
-                  <span className="w-6 h-6 rounded-full bg-qapp-blue-light text-qapp-blue text-xs font-bold flex items-center justify-center shrink-0">
-                    {i + 1}
-                  </span>
-                  <p className="text-sm text-qapp-gray">{day}</p>
-                </div>
-              ))}
-            </div>
+            <h4 className="font-semibold mb-1">{t('ai.plan7')}</h4>
+            <p className="text-xs text-qapp-gray mb-4">{t('ai.plan7hint')}</p>
+
+            {weeklyPlan ? (
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                {weeklyPlan.map((day) => (
+                  <PlanDayCard
+                    key={day.day}
+                    day={day}
+                    theme={day.theme}
+                    hours={day.hours}
+                    tasks={day.tasks}
+                    dayLabel={t('ai.day')}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2 mb-6">
+                {flatPlan.slice(0, 7).map((day, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-qapp-blue-light/40 transition-colors duration-200"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-qapp-blue-light text-qapp-blue text-xs font-bold flex items-center justify-center shrink-0">
+                      {i + 1}
+                    </span>
+                    <p className="text-sm text-qapp-gray">{day}</p>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="flex flex-wrap items-center gap-3">
               <Button onClick={refresh} disabled={loading}>
