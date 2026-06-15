@@ -44,7 +44,7 @@ export function buildENTContext({ currentScore, targetScore, universityId, progr
   }
 }
 
-async function callGemini(prompt, maxTokens = 1024) {
+async function callGeminiDirect(prompt, maxTokens) {
   const apiKey = getApiKey()
   if (!apiKey) throw new Error('Missing VITE_GEMINI_API_KEY')
 
@@ -75,6 +75,28 @@ async function callGemini(prompt, maxTokens = 1024) {
   }
 
   throw lastError || new Error('Gemini API unavailable')
+}
+
+async function callGeminiViaProxy(prompt, maxTokens) {
+  const res = await fetch('/api/gemini', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt, maxOutputTokens: maxTokens }),
+  })
+
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    throw new Error(data?.error || `Server error ${res.status}`)
+  }
+  if (!data?.text) throw new Error('Empty response from AI server')
+  return { text: data.text, model: data.model }
+}
+
+async function callGemini(prompt, maxTokens = 1024) {
+  if (import.meta.env.PROD) {
+    return callGeminiViaProxy(prompt, maxTokens)
+  }
+  return callGeminiDirect(prompt, maxTokens)
 }
 
 export async function fetchENTInsight(context) {
